@@ -12,7 +12,7 @@ import {
   X,
   Sparkles,
   Activity,
-  CircleHelp
+  HelpCircle
 } from 'lucide-react'
 
 interface Patient {
@@ -112,7 +112,7 @@ export default function DisambiguationScreen() {
               <div className="bg-gradient-to-r from-medical-50 via-medical-100/80 to-medical-50 p-5 border-b border-medical-200/50">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-soft">
-                    <CircleHelp className="w-5 h-5 text-medical-600" />
+                    <HelpCircle className="w-5 h-5 text-medical-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-medical-800">Multiple Matches</h3>
