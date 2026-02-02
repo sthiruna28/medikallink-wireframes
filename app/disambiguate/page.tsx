@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { 
-  HelpCircle, 
   MapPin, 
   Calendar, 
   Clock,
   ChevronRight,
   ArrowLeft,
   Mic,
-  X
+  X,
+  Sparkles,
+  Activity,
+  CircleHelp
 } from 'lucide-react'
 
 interface Patient {
@@ -48,7 +50,7 @@ const PATIENTS: Patient[] = [
 const VOICE_EXAMPLES = [
   { text: '"The first one"', lang: 'EN' },
   { text: '"Marie born 1975"', lang: 'EN' },
-  { text: '"La première"', lang: 'FR' },
+  { text: '"La premiere"', lang: 'FR' },
   { text: '"Marie 1975"', lang: 'FR' },
 ]
 
@@ -56,16 +58,18 @@ export default function DisambiguationScreen() {
   const [selectedId, setSelectedId] = useState<string | null>('1')
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-50">
       {/* Portal Header */}
-      <header className="bg-medical-800 text-white px-6 py-4 flex items-center justify-between">
+      <header className="bg-gradient-to-r from-slate-900 via-medical-900 to-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-xl">🏥</span>
-          <span className="font-semibold">MedikaLLInk Portal</span>
+          <div className="w-8 h-8 bg-gradient-to-br from-medical-400 to-medical-600 rounded-lg flex items-center justify-center">
+            <Activity className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-semibold tracking-tight">MedikaLLInk Portal</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-sm">Dr. Laurent Martin</span>
-          <div className="w-8 h-8 bg-medical-500 rounded-full flex items-center justify-center text-sm font-semibold">
+          <span className="text-sm text-slate-300">Dr. Laurent Martin</span>
+          <div className="w-9 h-9 bg-gradient-to-br from-medical-500 to-medical-600 rounded-full flex items-center justify-center text-sm font-semibold shadow-soft">
             LM
           </div>
         </div>
@@ -73,42 +77,50 @@ export default function DisambiguationScreen() {
 
       <div className="flex h-[calc(100vh-64px)]">
         {/* Patient Dossier (Background) */}
-        <div className="flex-1 bg-slate-50 p-6 hidden lg:block">
-          <div className="bg-white rounded-lg p-12 text-center text-slate-400 h-full">
-            <p className="text-lg">Patient dossier content</p>
+        <div className="flex-1 bg-slate-100 p-6 hidden lg:block">
+          <div className="bg-white rounded-xl p-12 text-center text-slate-400 h-full border border-slate-200/80 shadow-soft flex flex-col items-center justify-center">
+            <p className="text-lg font-medium">Patient dossier content</p>
+            <p className="text-sm mt-1">Select a patient to continue</p>
           </div>
         </div>
 
         {/* Copilot Panel */}
-        <div className="w-full lg:w-[420px] bg-white border-l border-slate-200 flex flex-col shadow-[-4px_0_20px_rgba(0,0,0,0.05)]">
+        <div className="w-full lg:w-[440px] bg-white border-l border-slate-200 flex flex-col shadow-soft-lg">
           {/* Panel Header */}
           <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 bg-gradient-to-br from-medical-500 to-medical-600 rounded-lg flex items-center justify-center text-white">
-                <Mic className="w-4 h-4" />
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="absolute inset-0 bg-medical-500 rounded-xl blur-lg opacity-30" />
+                <div className="relative w-9 h-9 bg-gradient-to-br from-medical-500 to-medical-600 rounded-xl flex items-center justify-center text-white shadow-soft">
+                  <Sparkles className="w-4 h-4" />
+                </div>
               </div>
-              <span className="font-semibold text-medical-800 text-sm">AI Copilot</span>
+              <span className="font-semibold text-slate-800">AI Copilot</span>
             </div>
             <Link 
               href="/"
-              className="w-7 h-7 bg-slate-100 hover:bg-slate-200 rounded-md flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors"
+              className="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors"
             >
               <X className="w-4 h-4" />
             </Link>
           </div>
 
           {/* Disambiguation Card */}
-          <div className="flex-1 overflow-y-auto p-5 bg-slate-50/50">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-5 bg-gradient-to-b from-slate-50/50 to-slate-100/50">
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-medical-50 to-medical-100 p-5 border-b border-medical-200">
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl shadow-sm mb-3">
-                  🤔
+              <div className="bg-gradient-to-r from-medical-50 via-medical-100/80 to-medical-50 p-5 border-b border-medical-200/50">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-soft">
+                    <CircleHelp className="w-5 h-5 text-medical-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-medical-800">Multiple Matches</h3>
+                    <p className="text-sm text-medical-600">Plusieurs resultats trouves</p>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-medical-800">Multiple Matches — Which One?</h3>
-                <p className="text-sm text-medical-600 mt-1">Plusieurs résultats trouvés</p>
                 
-                <div className="mt-3 bg-white p-3 rounded-lg border-l-4 border-medical-500">
+                <div className="bg-white p-3.5 rounded-xl border border-medical-200/50 shadow-sm">
                   <p className="text-sm text-slate-600 italic">
                     "Open patient Dupont" / "Ouvrir patient Dupont"
                   </p>
@@ -121,32 +133,32 @@ export default function DisambiguationScreen() {
                   <button
                     key={patient.id}
                     onClick={() => setSelectedId(patient.id)}
-                    className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 mb-3 text-left transition-all
+                    className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 mb-3 text-left transition-all duration-200
                       ${selectedId === patient.id 
-                        ? 'border-success-500 bg-success-50/50' 
+                        ? 'border-success-500 bg-success-50/50 shadow-soft' 
                         : 'border-slate-200 hover:border-medical-300 hover:bg-slate-50'}`}
                   >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm flex-shrink-0 transition-all
                       ${selectedId === patient.id 
-                        ? 'bg-success-500 text-white' 
+                        ? 'bg-gradient-to-br from-success-500 to-success-600 text-white shadow-soft' 
                         : 'bg-slate-100 text-slate-500'}`}>
                       {index + 1}
                     </div>
                     
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-slate-800 text-sm">{patient.name}</div>
-                      <div className="flex flex-wrap gap-2 mt-1.5">
-                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full
+                      <div className="font-semibold text-slate-800">{patient.name}</div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-colors
                           ${selectedId === patient.id ? 'bg-success-100 text-success-700' : 'bg-slate-100 text-slate-600'}`}>
                           <Calendar className="w-3 h-3" />
                           DOB: {patient.dob}
                         </span>
-                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full
+                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-colors
                           ${selectedId === patient.id ? 'bg-success-100 text-success-700' : 'bg-slate-100 text-slate-600'}`}>
                           <MapPin className="w-3 h-3" />
                           {patient.location}
                         </span>
-                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full
+                        <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-colors
                           ${selectedId === patient.id ? 'bg-success-100 text-success-700' : 'bg-slate-100 text-slate-600'}`}>
                           <Clock className="w-3 h-3" />
                           {patient.lastVisit}
@@ -154,25 +166,27 @@ export default function DisambiguationScreen() {
                       </div>
                     </div>
                     
-                    <ChevronRight className={`w-5 h-5 flex-shrink-0 transition-colors
-                      ${selectedId === patient.id ? 'text-success-500' : 'text-slate-300'}`} />
+                    <ChevronRight className={`w-5 h-5 flex-shrink-0 transition-all
+                      ${selectedId === patient.id ? 'text-success-500 translate-x-0.5' : 'text-slate-300'}`} />
                   </button>
                 ))}
               </div>
 
               {/* Voice Selection Hint */}
-              <div className="mx-4 mb-4 p-4 bg-success-50 rounded-xl border border-success-200">
+              <div className="mx-4 mb-4 p-4 bg-gradient-to-r from-success-50 to-success-100/50 rounded-xl border border-success-200/60">
                 <div className="flex items-start gap-3">
-                  <Mic className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
+                  <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
+                    <Mic className="w-4 h-4 text-success-600" />
+                  </div>
                   <div>
                     <div className="text-sm font-semibold text-success-800">
-                      Select by voice / Sélectionner par voix
+                      Select by voice / Selectionner par voix
                     </div>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-2.5">
                       {VOICE_EXAMPLES.map((example) => (
                         <span 
                           key={example.text}
-                          className="text-xs bg-white text-success-700 px-2 py-1 rounded border border-success-200"
+                          className="text-xs bg-white text-success-700 px-2.5 py-1 rounded-lg border border-success-200 shadow-sm"
                         >
                           {example.text}
                         </span>
@@ -198,9 +212,9 @@ export default function DisambiguationScreen() {
               <input
                 type="text"
                 placeholder="Or type your selection..."
-                className="w-full pl-4 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm
+                className="w-full pl-4 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm
                          placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-medical-500/20
-                         focus:border-medical-500 transition-all"
+                         focus:border-medical-400 transition-all"
               />
             </div>
           </div>
@@ -208,20 +222,20 @@ export default function DisambiguationScreen() {
       </div>
 
       {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-100 to-transparent">
-        <div className="flex justify-center gap-4">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-100 via-slate-100/95 to-transparent">
+        <div className="flex justify-center gap-3">
           <Link 
             href="/confirm"
-            className="flex items-center gap-2 text-medical-600 hover:text-medical-700 font-medium text-sm
-                     bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all"
+            className="flex items-center gap-2 text-slate-600 hover:text-medical-600 font-medium text-sm
+                     bg-white px-4 py-2.5 rounded-xl shadow-soft hover:shadow-soft-lg transition-all border border-slate-200/80"
           >
             <ArrowLeft className="w-4 h-4" />
             Previous: Confirmation
           </Link>
           <Link 
             href="/error"
-            className="flex items-center gap-2 text-medical-600 hover:text-medical-700 font-medium text-sm
-                     bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all"
+            className="flex items-center gap-2 text-white font-medium text-sm
+                     bg-gradient-to-r from-medical-500 to-medical-600 px-4 py-2.5 rounded-xl shadow-soft hover:shadow-glow transition-all"
           >
             Next: Error & Help
             <ArrowLeft className="w-4 h-4 rotate-180" />
